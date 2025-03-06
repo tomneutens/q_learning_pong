@@ -1,0 +1,8 @@
+body {
+    background-color: black;
+}
+
+/* Set the text color of the labels under the controls div to white. */
+.controls label {
+    color: white;
+}
