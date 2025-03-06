@@ -214,9 +214,9 @@ let episodes = 10;
 let steps = 1000;
 
 // The reward for losing the game
-let reward_for_loss = -100;
+let reward_for_loss = -10;
 // The reward for hitting the ball
-let reward_for_hit = 10;
+let reward_for_hit = 2;
 
 // Clear the canvas
 ctx.fillStyle = 'black';
@@ -315,6 +315,8 @@ function learn(){
 
     // The q-learning algorithm
     for (let episode = 0; episode < episodes; episode++) {
+        let episodeReward = 0;
+        prevScore = 0;
         reset();
         let ball_row = pong.ball.row;
         let ball_dir = pong.ball.x_dir;
@@ -342,6 +344,7 @@ function learn(){
                 prevScore = pong.score
                 reward = reward_for_hit;
             }
+            episodeReward += reward;
             q[state][action] = q[state][action] + alpha * (reward + gamma * Math.max(...q[next_state]) - q[state][action]);
             ball_row = pong.ball.row;
             ball_dir = pong.ball.x_dir;
@@ -350,10 +353,11 @@ function learn(){
                 break;
             }
         }
+        console.log('Episode ' + episode + ' reward: ' + episodeReward);
     }
 
-
-  
+    // Visualize the Q-table
+    visualize_q_table(q);
 
     // Reset the game and play based on the q-table
     reset();
@@ -388,6 +392,35 @@ function learn(){
         }, 1000 / 10);
     }, 2000)
         
+}
+
+// Visualize the Q-table by adding a table to the html below the controls
+function visualize_q_table(q) {
+    let table = document.getElementById('qTable');
+    table.innerHTML = '';
+    for (let state in q) {
+        let tr = document.createElement('tr');
+        let td = document.createElement('td');
+        td.innerHTML = state;
+        tr.appendChild(td);
+        for (let action of q[state]) {
+            let td = document.createElement('td');
+            td.innerHTML = action;
+            td.style.backgroundColor = mapColorToValue(action, -100, 100);
+            // Set size of the cell to 50x50 pixels
+            td.style.width = '25px';
+            td.style.height = '25px';
+
+            tr.appendChild(td);
+        }
+        table.appendChild(tr);
+    }
+}
+
+// Map the values of the q-table to colors
+function mapColorToValue(value, min, max) {
+    let hue = (1 - (value - min) / (max - min)) * 120;
+    return 'hsl(' + hue + ', 100%, 50%)';
 }
 
 document.getElementById('stopPlaying').onclick = function () {
