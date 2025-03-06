@@ -1,6 +1,6 @@
 # Q-learning Pong game
 
-This is a simple Pong game JavaScript. The player on the left (the rl agent) is trained using Q-learning by playing against an optimal opponent. The user can adjust the learning rate ($\alpha$), the discount factor ($\gamma$), the exploration rate ($\epsilon$), the number of episodes en the number of steps in each episode. After training the rl agent, you can play the agent yourself.
+This is a simple Pong game written in JavaScript. The player on the left (the rl agent) is trained using Q-learning by playing against an optimal opponent. The user can adjust the learning rate ($\alpha$), the discount factor ($\gamma$), the exploration rate ($\epsilon$), the number of episodes en the number of steps in each episode. After training the rl agent, you can play the agent yourself.
 
 ## Q-learning
 
